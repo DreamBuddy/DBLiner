@@ -24,7 +24,7 @@
 
 -(void)x_addLinerInPlace:(UIRectEdge)edge lineColor:(UIColor *)color lineWidth:(CGFloat)width insets:(UIEdgeInsets)insets{
     
-    if (edge & UIRectEdgeTop && edge & UIRectEdgeBottom && edge & UIRectEdgeLeft && edge & UIRectEdgeRight) {
+    if ((edge & UIRectEdgeTop) && (edge & UIRectEdgeBottom) && (edge & UIRectEdgeLeft) && (edge & UIRectEdgeRight)) {
         self.layer.borderColor = color.CGColor;
         self.layer.borderWidth = width;
         
@@ -78,11 +78,24 @@
 
 -(UIView *)x_createLiner{
     return ({
-        UIView *view = [UIView new];
+        UIView *view = [XLinerView new];
         [self addSubview:view];
         
         view;
     });
 }
+
+//移除分割线
+-(void)x_removeAllLiners{
+    [self.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([obj isKindOfClass:[XLinerView class]]) {
+            [obj removeFromSuperview];
+        }
+    }];
+}
+
+@end
+
+@implementation XLinerView
 
 @end

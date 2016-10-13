@@ -23,4 +23,10 @@
 
 -(void)x_addLinerInPlace:(UIRectEdge)edge lineColor:(UIColor *)color lineWidth:(CGFloat)width insets:(UIEdgeInsets)insets;
 
+-(void)x_removeAllLiners;
+
+@end
+
+@interface XLinerView : UIView
+
 @end
