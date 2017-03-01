@@ -1,28 +1,31 @@
 //
-//  UIView+XLiner.m
+//  UIView+DBLiner.m
 //  OneLucky
 //
 //  Created by mt on 16/6/12.
-//  Copyright © 2016年 imakejoy. All rights reserved.
+//  Copyright © 2016年 DreamBuddy. All rights reserved.
 //
 
-#import "UIView+XLiner.h"
+#import "UIView+DBLiner.h"
+#import <Masonry.h>
 
-@implementation UIView (XLiner)
+#define db_default_color [UIColor blackColor]
 
--(void)x_addLinerInPlace:(UIRectEdge)edge{
-    [self x_addLinerInPlace:edge lineColor:One_Color_LineColor];
+@implementation UIView (DBLiner)
+
+-(void)db_addLinerInPlace:(UIRectEdge)edge{
+    [self db_addLinerInPlace:edge lineColor:db_default_color];
 }
 
--(void)x_addLinerInPlace:(UIRectEdge)edge lineColor:(UIColor *)color{
-    [self x_addLinerInPlace:edge lineColor:color lineWidth:(1/[UIScreen mainScreen].scale)];
+-(void)db_addLinerInPlace:(UIRectEdge)edge lineColor:(UIColor *)color{
+    [self db_addLinerInPlace:edge lineColor:color lineWidth:(1/[UIScreen mainScreen].scale)];
 }
 
--(void)x_addLinerInPlace:(UIRectEdge)edge lineColor:(UIColor *)color lineWidth:(CGFloat)width{
-    [self x_addLinerInPlace:edge lineColor:color lineWidth:width insets:UIEdgeInsetsZero];
+-(void)db_addLinerInPlace:(UIRectEdge)edge lineColor:(UIColor *)color lineWidth:(CGFloat)width{
+    [self db_addLinerInPlace:edge lineColor:color lineWidth:width insets:UIEdgeInsetsZero];
 }
 
--(void)x_addLinerInPlace:(UIRectEdge)edge lineColor:(UIColor *)color lineWidth:(CGFloat)width insets:(UIEdgeInsets)insets{
+-(void)db_addLinerInPlace:(UIRectEdge)edge lineColor:(UIColor *)color lineWidth:(CGFloat)width insets:(UIEdgeInsets)insets{
     
     if ((edge & UIRectEdgeTop) && (edge & UIRectEdgeBottom) && (edge & UIRectEdgeLeft) && (edge & UIRectEdgeRight)) {
         self.layer.borderColor = color.CGColor;
@@ -32,7 +35,7 @@
     }
     
     if (edge & UIRectEdgeTop) {
-        UIView *liner = [self x_createLiner];
+        UIView *liner = [self db_createLiner];
         
         liner.backgroundColor = color;
         
@@ -43,7 +46,7 @@
     }
     
     if (edge & UIRectEdgeBottom) {
-        UIView *liner = [self x_createLiner];
+        UIView *liner = [self db_createLiner];
         
         liner.backgroundColor = color;
         
@@ -54,7 +57,7 @@
     }
     
     if (edge & UIRectEdgeLeft) {
-        UIView *liner = [self x_createLiner];
+        UIView *liner = [self db_createLiner];
         
         liner.backgroundColor = color;
         
@@ -65,7 +68,7 @@
     }
     
     if (edge & UIRectEdgeRight) {
-        UIView *liner = [self x_createLiner];
+        UIView *liner = [self db_createLiner];
         
         liner.backgroundColor = color;
         
@@ -76,9 +79,9 @@
     }
 }
 
--(UIView *)x_createLiner{
+-(UIView *)db_createLiner{
     return ({
-        UIView *view = [XLinerView new];
+        UIView *view = [DBLinerView new];
         [self addSubview:view];
         
         view;
@@ -86,9 +89,9 @@
 }
 
 //移除分割线
--(void)x_removeAllLiners{
+-(void)db_removeAllLiners{
     [self.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        if ([obj isKindOfClass:[XLinerView class]]) {
+        if ([obj isKindOfClass:[DBLinerView class]]) {
             [obj removeFromSuperview];
         }
     }];
@@ -96,6 +99,6 @@
 
 @end
 
-@implementation XLinerView
+@implementation DBLinerView
 
 @end
