@@ -7,6 +7,8 @@
 //
 
 #import "ViewController.h"
+#import <Masonry.h>
+#import "UIView+DBLiner.h"
 
 @interface ViewController ()
 
@@ -17,6 +19,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    UIView *testView = UIView.new;
+    [self.view addSubview:testView];
+    testView.backgroundColor = UIColor.grayColor;
+    [testView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.mas_equalTo(0);
+        make.size.mas_equalTo(CGSizeMake(100, 200));
+    }];
+    
+    [testView db_addLinerInPlace:UIRectEdgeLeft lineColor:UIColor.greenColor lineWidth:2];
 }
 
 
