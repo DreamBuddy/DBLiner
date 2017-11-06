@@ -7,9 +7,14 @@
 //
 
 #import "UIView+DBLiner.h"
+#import <objc/runtime.h>
 #import <Masonry.h>
 
-#define db_default_color [UIColor blackColor]
+@interface UIView ()
+
+@property (strong ,nonatomic) NSMutableDictionary *db_linesStore;
+
+@end
 
 @implementation UIView (DBLiner)
 
@@ -26,6 +31,12 @@
 }
 
 -(void)db_addLinerInPlace:(UIRectEdge)edge lineColor:(UIColor *)color lineWidth:(CGFloat)width insets:(UIEdgeInsets)insets{
+    [self db_addLinerInPlace:edge lineColor:color lineWidth:width insets:insets specialKey:nil];
+}
+
+-(void)db_addLinerInPlace:(UIRectEdge)edge lineColor:(UIColor *)color lineWidth:(CGFloat)width insets:(UIEdgeInsets)insets specialKey:(NSString *)specialKey{
+    
+    specialKey = [specialKey isEqualToString:@""]?nil:specialKey;
     
     if ((edge & UIRectEdgeTop) && (edge & UIRectEdgeBottom) && (edge & UIRectEdgeLeft) && (edge & UIRectEdgeRight)) {
         self.layer.borderColor = color.CGColor;
@@ -43,6 +54,8 @@
             make.height.mas_equalTo(width);
             make.left.right.top.mas_offset(insets);
         }];
+        
+        !specialKey?:[self.db_linesStore setValue:liner forKey:specialKey];
     }
     
     if (edge & UIRectEdgeBottom) {
@@ -54,6 +67,8 @@
             make.height.mas_equalTo(width);
             make.left.right.bottom.mas_offset(insets);
         }];
+        
+        !specialKey?:[self.db_linesStore setValue:liner forKey:specialKey];
     }
     
     if (edge & UIRectEdgeLeft) {
@@ -65,6 +80,8 @@
             make.width.mas_equalTo(width);
             make.top.left.bottom.mas_offset(insets);
         }];
+        
+        !specialKey?:[self.db_linesStore setValue:liner forKey:specialKey];
     }
     
     if (edge & UIRectEdgeRight) {
@@ -76,7 +93,19 @@
             make.width.mas_equalTo(width);
             make.top.right.bottom.mas_offset(insets);
         }];
+        
+        !specialKey?:[self.db_linesStore setValue:liner forKey:specialKey];
     }
+}
+
+- (UIView *)db_linerForSpecialKey:(NSString *)specialKey{
+    return self.db_linesStore[specialKey];
+}
+
+- (UIView *)db_createLinerWithLineColor:(UIColor *)color{
+    UIView *liner = [self db_createLiner];
+    liner.backgroundColor = color;
+    return liner;
 }
 
 -(UIView *)db_createLiner{
@@ -95,6 +124,17 @@
             [obj removeFromSuperview];
         }
     }];
+    
+    self.db_linesStore = nil;
+}
+
+//Associated Object
+- (NSMutableDictionary *)db_linesStore{
+    NSMutableDictionary *obj = objc_getAssociatedObject(self, _cmd);
+    return obj?:({id temp = [@{} mutableCopy];self.db_linesStore = temp;temp;});
+}
+- (void)setDb_linesStore:(NSMutableDictionary *)db_linesStore{
+    objc_setAssociatedObject(self, @selector(db_linesStore), db_linesStore, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 @end
